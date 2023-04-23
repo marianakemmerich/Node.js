@@ -42,12 +42,12 @@ A thread is just like a set of instructions that is run in the computer's CPU, s
 
 > Imagine there's a user accessing your application, and there's a huge synchronous file read in your code that will take one second to load. This will mean that, for that one second, all other users will have to wait because the entire execution is blocked for that one second. If the other users want to do some simple tasks, like logging into your application or just requesting some data, they won't be able to do so. They'll have to wait until the file is finished reading, only when that happens they'll be able to perform the simpler tasks, one after another.
 
-##### NON-BLOCKING CODE:
+###### *NON-BLOCKING CODE:*
 The asynchronous file read function, instead of blocking the single thread, does the heavy work in the background, where it stays until it's finished reading the data from the file. Then, a callback function is registered to be called once the data is available. In this scenario, all the other users can perform their tasks in a single thread, one after another, while the file is still being read in the background.
 
 Once the data is read, the callback function will get called to be executed in the main single thread, in order to process the read data.
 
-##### CALLBACK HELL:
+###### *CALLBACK HELL:*
 ```
 const fs = require('fs');
 
@@ -61,4 +61,13 @@ fs.readFile('start.txt', 'utf-8', (err, data1) => {
         });
     });
 });
+```
+
+##### READING AND WRITING FILES ASYNCHRONOUSLY:
+> Node.js is built around callback functions in order to implement an asynchronous behaviour.
+```
+fs.readFile('./txt/start.txt', 'utf-8', (err, data) => {
+    console.log(data);
+});
+console.log('Will read file!');
 ```
