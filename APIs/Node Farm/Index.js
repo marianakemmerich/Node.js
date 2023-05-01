@@ -1,17 +1,9 @@
-// sync version can be used for top level code, since it's executed once right at the beginning when the applications are loaded
-const replaceTemplate = (temp, product) => {
-    let output = temp.replace(/{%PRODUCTNAME%}/g, product.productName); // "/.../g" makes sure all the placeholders get replaced
-    output = output.replace(/{%IMAGE%}/g, product.image);
-    output = output.replace(/{%PRICE%}/g, product.price);
-    output = output.replace(/{%FROM%}/g, product.from);
-    output = output.replace(/{%NUTRIENTS%}/g, product.nutrients);
-    output = output.replace(/{%QUANTITY%}/g, product.quantity);
-    output = output.replace(/{%DESCRIPTION%}/g, product.description);
-    output = output.replace(/{%ID%}/g, product.id);
+const fs = require('fs');
+const http = require('http'); // gives network capabilities
+const url = require('url');
+const replaceTemplate = require('./modules/replaceTemplate');
 
-    if(!product.organic) output = output.replace(/{%NOT_ORGANIC%}/g, 'not-organic');
-    return output;
-}
+// sync version can be used for top level code, since it's executed once right at the beginning when the applications are loaded
 
 const tempOverview = fs.readFileSync(`${__dirname}/templates/overview.html`, 'utf-8');
 const tempCards = fs.readFileSync(`${__dirname}/templates/cards.html`, 'utf-8');
@@ -21,10 +13,10 @@ const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8'); // rea
 const dataObject = JSON.parse(data); // this will take the JSON code, which is a string, and automatically turn it into JavaScript
 
 const server = http.createServer((req, res) => {
-    const pathName = req.url;
+    const { query, pathname } = url.parse(req.url, true);
     // for different path names we have different actions:
     // overview page
-    if(pathName === '/' || pathName === '/overview'){ 
+    if(pathname === '/' || pathname === '/overview'){ 
         res.writeHead(200, { 'Content-type': 'text/html' });
 
         const cardsHtml = dataObject.map(element => replaceTemplate(tempCards, element)).join('');
@@ -32,11 +24,14 @@ const server = http.createServer((req, res) => {
         res.end(output);
 
     // product page    
-    } else if(pathName === '/product'){ 
-        res.end('This is the PRODUCT!');
+    } else if(pathname === '/product'){ 
+        res.writeHead(200, { 'Content-type': 'text/html' });
+        const product = dataObject[query.id]; // retrieving an element based on a query string
+        const output = replaceTemplate(tempProduct, product);
+        res.end(output);
 
     // API route    
-    } else if(pathName === '/api'){ 
+    } else if(pathname === '/api'){ 
             res.writeHead(200, { 'Content-type': 'application/json' }); // specify to the browser that you're sending back JSON
             res.end(data); // sends the data as the response
 
