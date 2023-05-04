@@ -78,4 +78,4 @@ There are many available, but the most important one are:
 - POST: sends data
 - PUT/PATCH: modifies data
 
-The main difference between HTTP and HTTPS is is tha HTTPS is encrypted using TLS or SSL, which are protocols. Besides these additional encryption, the logic between HTTP requests and responses still aplies to HTTPS.
+The main difference between HTTP and HTTPS is is that HTTPS is encrypted using TLS or SSL, which are protocols. Besides these additional encryption, the logic between HTTP requests and responses still aplies to HTTPS.
