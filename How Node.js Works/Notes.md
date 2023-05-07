@@ -1,4 +1,4 @@
-**EVENT LOOP**: all the application code that is inside callback functions (non-top-level code)
+**EVENT LOOP**: all the application code that is inside callback functions (non-top-level code).
 
 **EVENT-DRIVEN ARCHITECTURE**:
 - events are emmited
@@ -27,3 +27,7 @@ In this phase, about 90% of the code gets executed.
 
 -4th phase: **close callbacks**
 In this phase, all close events are processed, for example, for when a web server or web socket shuts down.
+
+- **EVENT EMITTERS**: emmit named events as soon as something important happens in the app, e.g request hitting server, timer expiring, or a file finishing to read.
+
+- **EVENT LISTENERS**: pick up the events emitted, which will fire off callback functions that are attached to each listener.
