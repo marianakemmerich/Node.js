@@ -1,5 +1,5 @@
-// console.log(arguments);
-// console.log(require("module").wrapper);
+// console.log(arguments); // arguments is an array in JavaScript that cotains all the values that were passed into a function
+// console.log(require("module").wrapper); // wrapper is a function that is intended to call one or more other functions
 
 // module.exports
 const C = require("./test-module-1");
